@@ -10,6 +10,11 @@ pool:
   vmImage: windows-latest
 
 stages:
+  - stage: Code_Checkin
+    jobs:
+       - job:
+         steps:
+            - checkout: none
   - stage: java_build_stage
     displayName: "maven build"
     jobs:
