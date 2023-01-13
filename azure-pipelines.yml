@@ -18,7 +18,7 @@ stages:
         - task: Maven@3
           inputs:
             mavenPomFile: 'sampleWebApp/pom.xml'
-            goals: 'test'
+            goals: 'package'
             publishJUnitResults: true
             testResultsFiles: '**/surefire-reports/TEST-*.xml'
             javaHomeOption: 'JDKVersion'
@@ -26,3 +26,12 @@ stages:
             mavenAuthenticateFeed: false
             effectivePomSkip: false
             sonarQubeRunAnalysis: false
+  - stage: create_bug_report
+    displayName: "Create workitem"
+    jobs:
+      - job: Create_workitem
+        steps:
+          - task: PowerShell@2
+            inputs:
+              filePath: 'createbug.ps1'
+            condition: succeededOrFailed()
