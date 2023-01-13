@@ -11,7 +11,7 @@ pool:
 
 steps:
 - task: Maven@3
-  displayName: 'Maven sampleWebApp/pom.xml'
+  displayName: 'sampleWebApp/pom.xml'
   inputs:
     mavenPomFile: '$(Parameters.mavenPOMFile)'
 
