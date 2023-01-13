@@ -28,6 +28,7 @@ stages:
             sonarQubeRunAnalysis: false
   - stage: create_bug_report
     displayName: "Create workitem"
+    condition: in(dependencies.java_build_Stage.result, 'Succeeded' , 'Skipped' , 'failed')
     jobs:
       - job: Create_workitem
         steps:
