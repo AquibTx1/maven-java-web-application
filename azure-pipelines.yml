@@ -26,6 +26,12 @@ stages:
             mavenAuthenticateFeed: false
             effectivePomSkip: false
             sonarQubeRunAnalysis: false
+        - task: CopyFiles@2
+          inputs:
+            SourceFolder: '$(system.defaultworkingdirectory)'
+            Contents: '**/*.jar'
+            TargetFolder: '$(build.artifactstagingdirectory)'
+          condition: succeededOrFailed()
   - stage: create_bug_report
     displayName: "Create workitem"
     condition: in(dependencies.java_build_Stage.result, 'Succeeded' , 'failed')
