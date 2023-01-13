@@ -61,9 +61,9 @@ stages:
             inputs:
               filePath: 'createbug.ps1'
             condition: succeededOrFailed()
-  - stage: Deploy_web_app
-    displayName: "Deploy"
-    condition: in(dependencies.java_build_stage.result, 'succeeded' , 'failed')
-    jobs:
-      - job: Deploy_web_app
-        steps:
+  # - stage: Deploy_web_app
+  #   displayName: "Deploy"
+  #   condition: in(dependencies.java_build_stage.result, 'succeeded' , 'failed')
+  #   jobs:
+  #     - job: Deploy_web_app
+  #       steps:
