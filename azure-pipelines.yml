@@ -18,20 +18,39 @@ stages:
         - task: Maven@3
           inputs:
             mavenPomFile: 'sampleWebApp/pom.xml'
-            goals: 'package'
-            publishJUnitResults: true
-            testResultsFiles: '**/surefire-reports/TEST-*.xml'
-            javaHomeOption: 'JDKVersion'
-            mavenVersionOption: 'Default'
-            mavenAuthenticateFeed: false
-            effectivePomSkip: false
-            sonarQubeRunAnalysis: false
+
         - task: CopyFiles@2
           inputs:
             SourceFolder: '$(system.defaultworkingdirectory)'
             Contents: '**/*.jar'
             TargetFolder: '$(build.artifactstagingdirectory)'
           condition: succeededOrFailed()
+
+        - task: PublishBuildArtifacts@1
+          inputs:
+            PathtoPublish: '$(build.artifactstagingdirectory)'
+          condition: succeededOrFailed()
+        # - task: Maven@3
+        #   inputs:
+        #     mavenPomFile: 'sampleWebApp/pom.xml'
+        #     goals: 'package'
+        #     publishJUnitResults: true
+        #     testResultsFiles: '**/surefire-reports/TEST-*.xml'
+        #     javaHomeOption: 'JDKVersion'
+        #     mavenVersionOption: 'Default'
+        #     mavenAuthenticateFeed: false
+        #     effectivePomSkip: false
+        #     sonarQubeRunAnalysis: false
+        # - task: CopyFiles@2
+        #   inputs:
+        #     SourceFolder: '$(system.defaultworkingdirectory)'
+        #     Contents: '**/*.jar'
+        #     TargetFolder: '$(build.artifactstagingdirectory)'
+        #   condition: succeededOrFailed()
+        # - task: PublishBuildArtifacts@1
+        #   inputs:
+        #     PathtoPublish: '$(build.artifactstagingdirectory)'
+        #   condition: succeededOrFailed()
   - stage: create_bug_report
     displayName: "Create workitem"
     condition: in(dependencies.java_build_Stage.result, 'Succeeded' , 'failed')
@@ -42,13 +61,9 @@ stages:
             inputs:
               filePath: 'createbug.ps1'
             condition: succeededOrFailed()
-  - stage: publish_artifact
-    displayName: "publishing artifact"
+  - stage: Deploy_web_app
+    displayName: "Deploy"
     condition: in(dependencies.java_build_stage.result, 'succeeded' , 'failed')
     jobs:
-      - job: publishing_artifact
+      - job: Deploy_web_app
         steps:
-          - task: PublishBuildArtifacts@1
-            inputs:
-              PathtoPublish: '$(build.artifactstagingdirectory)'
-            condition: succeededOrFailed()
