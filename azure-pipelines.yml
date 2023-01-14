@@ -25,6 +25,13 @@ stages:
                 # sonar.exclusions=**/*.bin
                 sonar.projectKey=demo-pipeline_demo-pipeline_AYWve2AleXlWhX-gmT6r
 
+          - task: JavaToolInstaller@0
+            displayName: 'Use Java11'
+            inputs:
+              versionSpec: 11
+              jdkArchitectureOption: x64
+              jdkSourceOption: PreInstalled
+
 ######################################################################
 
   - stage: java_build_stage
@@ -53,16 +60,16 @@ stages:
 
 ##########################################################################
 
-  - stage: create_bug_report
-    displayName: "Create workitem"
-    condition: in(dependencies.java_build_Stage.result, 'Succeeded' , 'failed')
-    jobs:
-      - job: Create_workitem
-        steps:
-          - task: PowerShell@2
-            inputs:
-              filePath: 'createbug.ps1'
-            condition: succeededOrFailed()
+  # - stage: create_bug_report
+  #   displayName: "Create workitem"
+  #   condition: in(dependencies.java_build_Stage.result, 'Succeeded' , 'failed')
+  #   jobs:
+  #     - job: Create_workitem
+  #       steps:
+  #         - task: PowerShell@2
+  #           inputs:
+  #             filePath: 'createbug.ps1'
+  #           condition: succeededOrFailed()
 
 #############################################################################
  
