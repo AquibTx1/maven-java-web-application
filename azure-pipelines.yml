@@ -10,6 +10,18 @@ pool:
   vmImage: windows-latest
 
 stages:
+  - stage: sonarqube
+    displayName: "sonarqube_analysis"
+    jobs:
+      - job: "anaysis"
+        steps:
+          - task: SonarQubePrepare@5
+            inputs:
+              SonarQube: 'sonarqube'
+              scannerMode: 'Other'
+
+######################################################################
+
   - stage: java_build_stage
     displayName: "maven build"
     jobs:
