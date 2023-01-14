@@ -30,6 +30,9 @@ stages:
         - task: Maven@3
           inputs:
             mavenPomFile: 'sampleWebApp/pom.xml'
+            sonarQubeRunAnalysis: true
+            sqMavenPluginVersionChoice: pom
+          condition: always()
 
         - task: CopyFiles@2
           inputs:
