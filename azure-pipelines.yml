@@ -10,27 +10,27 @@ pool:
   vmImage: windows-latest
 
 stages:
-  - stage: sonarqube
-    displayName: "sonarqube_analysis"
-    jobs:
-      - job: "anaysis"
-        steps:
-          - task: SonarQubePrepare@5
-            inputs:
-              SonarQube: 'sonarqube'
-              scannerMode: 'Other'
-              extraProperties: |
-                # Additional properties that will be passed to the scanner, 
-                # Put one key=value per line, example:
-                # sonar.exclusions=**/*.bin
-                sonar.projectKey=demo-pipeline_demo-pipeline_AYWve2AleXlWhX-gmT6r
+  # - stage: sonarqube
+  #   displayName: "sonarqube_analysis"
+  #   jobs:
+  #     - job: "anaysis"
+  #       steps:
+  #         - task: SonarQubePrepare@5
+  #           inputs:
+  #             SonarQube: 'sonarqube'
+  #             scannerMode: 'Other'
+  #             extraProperties: |
+  #               # Additional properties that will be passed to the scanner, 
+  #               # Put one key=value per line, example:
+  #               # sonar.exclusions=**/*.bin
+  #               sonar.projectKey=demo-pipeline_demo-pipeline_AYWve2AleXlWhX-gmT6r
 
-          - task: JavaToolInstaller@0
-            displayName: 'Use Java11'
-            inputs:
-              versionSpec: 11
-              jdkArchitectureOption: x64
-              jdkSourceOption: PreInstalled
+  #         - task: JavaToolInstaller@0
+  #           displayName: 'Use Java11'
+  #           inputs:
+  #             versionSpec: 11
+  #             jdkArchitectureOption: x64
+  #             jdkSourceOption: PreInstalled
 
 ######################################################################
 
@@ -40,6 +40,21 @@ stages:
     jobs:
       - job: Build_java
         steps:
+        - task: SonarQubePrepare@5
+          inputs:
+            SonarQube: 'sonarqube'
+            scannerMode: 'Other'
+            extraProperties: |
+              # Additional properties that will be passed to the scanner, 
+              # Put one key=value per line, example:
+              # sonar.exclusions=**/*.bin
+              sonar.projectKey=demo-pipeline_demo-pipeline_AYWve2AleXlWhX-gmT6r
+
+        - task: JavaToolInstaller@0
+          inputs:
+            versionSpec: 11
+            jdkArchitectureOption: x64
+            jdkSourceOption: PreInstalled
         - task: Maven@3
           inputs:
             mavenPomFile: 'sampleWebApp/pom.xml'
