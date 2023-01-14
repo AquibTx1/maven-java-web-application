@@ -35,7 +35,6 @@ stages:
 ######################################################################
 
   - stage: java_build_stage
-    dependsOn: sonarqube
     displayName: "maven build"
     jobs:
       - job: Build_java
