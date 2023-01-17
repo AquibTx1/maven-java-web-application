@@ -26,7 +26,7 @@ function GetUrl() {
 }
 
 $orgUrl = "https://dev.azure.com/Mytraining77492"
-$personalToken = "wogimo2kfua2e4oochvis2cu72agihjvmdcc3sp2dmquvdt2jlta"
+$personalToken = "e2ph6hbfinkes7qrk3eenn4o3hsx7kt64xykvqdefwgscxg2y5aq"
 
 Write-Host "Initialize authentication context" -ForegroundColor Yellow
 $token = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes(":$($personalToken)"))
