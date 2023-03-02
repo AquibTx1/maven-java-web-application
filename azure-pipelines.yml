@@ -17,49 +17,57 @@ stages:
         steps:
         - task: SonarQubePrepare@5
           inputs:
-            SonarQube: 'sonarqube'
+            SonarQube: 'poc'
             scannerMode: 'Other'
-            extraProperties: |
-              # Additional properties that will be passed to the scanner, 
-              # Put one key=value per line, example:
-              # sonar.exclusions=**/*.bin
-              sonar.projectKey=demo-pipeline_demo-pipeline_AYWve2AleXlWhX-gmT6r
+        - task: SonarQubeAnalyze@5
+        - task: SonarQubePublish@5
+          inputs:
+            pollingTimeoutSec: '300'
+        # - task: SonarQubePrepare@5
+        #   inputs:
+        #     SonarQube: 'sonarqube'
+        #     scannerMode: 'Other'
+            # extraProperties: |
+            #   # Additional properties that will be passed to the scanner, 
+            #   # Put one key=value per line, example:
+            #   # sonar.exclusions=**/*.bin
+            #   sonar.projectKey=demo-pipeline_demo-pipeline_AYWve2AleXlWhX-gmT6r
 
-        - task: JavaToolInstaller@0
-          inputs:
-            versionSpec: 11
-            jdkArchitectureOption: x64
-            jdkSourceOption: PreInstalled
-        - task: Maven@3
-          inputs:
-            mavenPomFile: 'sampleWebApp/pom.xml'
-            sonarQubeRunAnalysis: true
-            sqMavenPluginVersionChoice: pom
-          condition: always()
+        # - task: JavaToolInstaller@0
+        #   inputs:
+        #     versionSpec: 11
+        #     jdkArchitectureOption: x64
+        #     jdkSourceOption: PreInstalled
+        # - task: Maven@3
+        #   inputs:
+        #     mavenPomFile: 'sampleWebApp/pom.xml'
+        #     sonarQubeRunAnalysis: true
+        #     sqMavenPluginVersionChoice: pom
+        #   condition: always()
 
-        - task: CopyFiles@2
-          inputs:
-            SourceFolder: '$(system.defaultworkingdirectory)'
-            Contents: '**/*.jar'
-            TargetFolder: '$(build.artifactstagingdirectory)'
-          condition: succeededOrFailed()
+        # - task: CopyFiles@2
+        #   inputs:
+        #     SourceFolder: '$(system.defaultworkingdirectory)'
+        #     Contents: '**/*.jar'
+        #     TargetFolder: '$(build.artifactstagingdirectory)'
+        #   condition: succeededOrFailed()
 
-        - task: PublishBuildArtifacts@1
-          inputs:
-            PathtoPublish: '$(build.artifactstagingdirectory)'
-          condition: succeededOrFailed()
+        # - task: PublishBuildArtifacts@1
+        #   inputs:
+        #     PathtoPublish: '$(build.artifactstagingdirectory)'
+        #   condition: succeededOrFailed()
 
 ##########################################################################
 
-  - stage: create_bug_report
-    displayName: "Create workitem"
-    condition: in(dependencies.java_build_Stage.result, 'Succeeded' , 'failed')
-    jobs:
-      - job: Create_workitem
-        steps:
-          - task: PowerShell@2
-            inputs:
-              filePath: 'createbug.ps1'
-            condition: succeededOrFailed()
+  # - stage: create_bug_report
+  #   displayName: "Create workitem"
+  #   condition: in(dependencies.java_build_Stage.result, 'Succeeded' , 'failed')
+  #   jobs:
+  #     - job: Create_workitem
+  #       steps:
+  #         - task: PowerShell@2
+  #           inputs:
+  #             filePath: 'createbug.ps1'
+  #           condition: succeededOrFailed()
 
 #############################################################################
