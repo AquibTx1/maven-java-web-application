@@ -18,14 +18,7 @@ stages:
         - task: SonarQubePrepare@5
           inputs:
             SonarQube: 'poc'
-            scannerMode: 'CLI'
-            configMode: 'manual'
-            cliProjectKey: 'DAtaAppp'
-            cliSources: '.'
-        - task: SonarQubeAnalyze@5
-        - task: SonarQubePublish@5
-          inputs:
-            pollingTimeoutSec: '300'
+            scannerMode: 'Other'
         # - task: SonarQubePrepare@5
         #   inputs:
         #     SonarQube: 'sonarqube'
